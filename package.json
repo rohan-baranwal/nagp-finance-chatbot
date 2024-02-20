@@ -4,7 +4,8 @@
   "description": "fincance chatbot",
   "main": "index.js",
   "scripts": {
-    "tunnel": "ngrok http https://upgraded-space-pancake-vqprvjv7qrp3x6rr-8080.app.github.dev/"
+    "tunnel:gh-codespace": "ngrok http https://<gh-codespace>-8080.app.github.dev/",
+    "tunnel:local": "ngrok http 8080"
   },
   "repository": {
     "type": "git",
