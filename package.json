@@ -1,0 +1,27 @@
+{
+  "name": "nagp-finance-chatbot",
+  "version": "1.0.0",
+  "description": "fincance chatbot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rohan-baranwal/nagp-finance-chatbot.git"
+  },
+  "keywords": [
+    "chatbot",
+    "nagp",
+    "nagarro",
+    "finance",
+    "finance",
+    "chatbot"
+  ],
+  "author": "baranwal.rohan0@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rohan-baranwal/nagp-finance-chatbot/issues"
+  },
+  "homepage": "https://github.com/rohan-baranwal/nagp-finance-chatbot#readme"
+}
