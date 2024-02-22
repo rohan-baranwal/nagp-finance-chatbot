@@ -40,6 +40,9 @@ const mainChoiceIntent = (agent: WebhookClient) => {
   } else {
     agent.add(`Welcome to BaraFin services.\nSomething is wrong. We are working on fixing it.\nStay tuned!`);
   }
+
+  console.log("here");
+
 }
 
 export default mainChoiceIntent;

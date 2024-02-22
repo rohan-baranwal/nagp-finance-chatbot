@@ -1,8 +1,6 @@
 import express, { json } from "express";
 import { WebhookClient, Payload, RichResponse, Platforms } from "dialogflow-fulfillment";
 import { Intents } from "./src/enums/intents.enum";
-import { TelegramOriginalRequest } from "./src/interfaces/original-request.interface";
-import { Events } from "./src/enums/events.enum";
 import mainChoiceIntent from "./src/intents/main-choice.intent";
 import defaultWelcome from "./src/intents/default-welcome.inent";
 import defaultFallback from "./src/intents/default-fallback.intent";
