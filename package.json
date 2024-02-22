@@ -8,7 +8,7 @@
     "tunnel:local": "ngrok http 8080",
     "lint": "tslint --project .",
     "build": "tsc",
-    "build-run-server": "npm run build && node dist/index.js"
+    "local-server": "npm run build && node dist/index.js"
   },
   "repository": {
     "type": "git",
