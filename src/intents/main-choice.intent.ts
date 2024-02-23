@@ -1,7 +1,10 @@
 import { Payload, Platforms, WebhookClient } from "dialogflow-fulfillment";
 import { TelegramOriginalRequest } from "../interfaces/original-request.interface";
+import { Intents } from "../enums/intents.enum";
+import { getSession } from "../services/session.service";
 
 const mainChoiceIntent = (agent: WebhookClient) => {
+  const session = getSession(agent);
   if ((agent.originalRequest as TelegramOriginalRequest).source === "telegram") {
     const telegramResponse: Payload = new Payload(
       "TELEGRAM" as Platforms,
@@ -12,19 +15,19 @@ const mainChoiceIntent = (agent: WebhookClient) => {
           "inline_keyboard": [
             [
               {
-                "text": "Portfolio Valuation",
+                "text": `1. Portfolio Valuation`,
                 "callback_data": "portfolio-valuation"
               }
             ],
             [
               {
-                "text": "Fund Explorer",
+                "text": `2. Fund Explorer`,
                 "callback_data": "fund-explorer"
               }
             ],
             [
               {
-                "text": "Transaction History",
+                "text": `3. Transaction History`,
                 "callback_data": "transaction-history"
               }
             ]
@@ -38,11 +41,8 @@ const mainChoiceIntent = (agent: WebhookClient) => {
     )
     agent.add(telegramResponse);
   } else {
-    agent.add(`Welcome to BaraFin services.\nSomething is wrong. We are working on fixing it.\nStay tuned!`);
+    agent.add(`Welcome to BaraFin services.\nSomething is wrong. We are working on fixing it.\nStay tuned! mci`);
   }
-
-  console.log("here");
-
 }
 
 export default mainChoiceIntent;

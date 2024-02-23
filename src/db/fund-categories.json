@@ -1,0 +1,125 @@
+[
+  {
+    "id": "equity-funds",
+    "name": "Equity Funds",
+    "description": "Equity funds primarily invest in stocks or equity securities.",
+    "children": [
+      {
+        "id": "large-cap",
+        "name": "Large-cap Funds",
+        "description": "Large-cap funds invest primarily in companies with large market capitalization.",
+        "children": [],
+        "examples": [
+          "HDFC Top 100 Fund",
+          "ICICI Prudential Bluechip Fund",
+          "SBI Bluechip Fund"
+        ]
+      },
+      {
+        "id": "mid-cap",
+        "name": "Mid-cap Funds",
+        "description": "Mid-cap funds invest in companies with medium-sized market capitalization.",
+        "children": [],
+        "examples": [
+          "DSP Midcap Fund",
+          "Kotak Emerging Equity Scheme",
+          "Aditya Birla Sun Life Mid Cap Fund"
+        ]
+      },
+      {
+        "id": "small-cap",
+        "name": "Small-cap Funds",
+        "description": "Small-cap funds invest in companies with small market capitalization.",
+        "children": [],
+        "examples": [
+          "SBI Small Cap Fund",
+          "HDFC Small Cap Fund",
+          "Axis Small Cap Fund"
+        ]
+      }
+    ],
+    "examples": []
+  },
+  {
+    "id": "debt-funds",
+    "name": "Debt Funds",
+    "description": "Debt funds primarily invest in fixed-income securities such as bonds and treasury bills.",
+    "children": [
+      {
+        "id": "liquid-funds",
+        "name": "Liquid Funds",
+        "description": "Liquid funds invest in very short-term market instruments with high liquidity.",
+        "children": [],
+        "examples": [
+          "Aditya Birla Sun Life Liquid Fund",
+          "ICICI Prudential Liquid Fund",
+          "SBI Liquid Fund"
+        ]
+      },
+      {
+        "id": "income-funds",
+        "name": "Income Funds",
+        "description": "Income funds invest in fixed-income securities with an objective to generate regular income.",
+        "children": [],
+        "examples": [
+          "UTI Income Fund",
+          "L&T Income Opportunities Fund",
+          "IDFC Bond Fund - Income Plan"
+        ]
+      },
+      {
+        "id": "gilt-funds",
+        "name": "Gilt Funds",
+        "description": "Gilt funds primarily invest in government securities.",
+        "children": [],
+        "examples": [
+          "ICICI Prudential Gilt Fund",
+          "SBI Magnum Gilt Fund",
+          "UTI Gilt Fund"
+        ]
+      }
+    ],
+    "examples": []
+  },
+  {
+    "id": "hybrid-funds",
+    "name": "Hybrid Funds",
+    "description": "Hybrid funds invest in a mix of equities and debt instruments.",
+    "children": [
+      {
+        "id": "balanced-funds",
+        "name": "Balanced Funds",
+        "description": "Balanced funds maintain a balanced portfolio of stocks and bonds.",
+        "children": [],
+        "examples": [
+          "HDFC Balanced Advantage Fund",
+          "ICICI Prudential Equity & Debt Fund",
+          "SBI Equity Hybrid Fund"
+        ]
+      },
+      {
+        "id": "arbitrage-funds",
+        "name": "Arbitrage Funds",
+        "description": "Arbitrage funds exploit price differentials in different markets to generate returns.",
+        "children": [],
+        "examples": [
+          "Kotak Equity Arbitrage Fund",
+          "Edelweiss Arbitrage Fund",
+          "Axis Enhanced Arbitrage Fund"
+        ]
+      }
+    ],
+    "examples": []
+  },
+  {
+    "id": "index-funds",
+    "name": "Index Funds",
+    "description": "Index funds replicate the performance of a specific market index.",
+    "children": [],
+    "examples": [
+      "ICICI Prudential Nifty Index Fund",
+      "UTI Nifty Index Fund",
+      "Aditya Birla Sun Life Index Fund"
+    ]
+  }
+]

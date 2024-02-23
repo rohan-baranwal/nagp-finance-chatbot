@@ -4,6 +4,7 @@ import { Intents } from "./src/enums/intents.enum";
 import mainChoiceIntent from "./src/intents/main-choice.intent";
 import defaultWelcome from "./src/intents/default-welcome.inent";
 import defaultFallback from "./src/intents/default-fallback.intent";
+import fundExplorerInent from "./src/intents/fund-explorer.intent";
 const app = express();
 
 app.get('/', (req, res) => res.send('server online'));
@@ -14,9 +15,11 @@ app.post(`/dialogflow`, json(), (req, res) => {
 
   let intentMap: Map<string, (agent: WebhookClient) => void> = new Map<string, (agent: WebhookClient) => void>();
 
+  // INTENT Setups
   intentMap.set(Intents.DefaultWelcome, defaultWelcome);
-  intentMap.set(Intents.MainChoice, mainChoiceIntent);
   intentMap.set(Intents.DefaultFallback, defaultFallback);
+  intentMap.set(Intents.MainChoice, mainChoiceIntent);
+  intentMap.set(Intents.FundExplorer, fundExplorerInent)
 
   agent.handleRequest(intentMap);
 });
