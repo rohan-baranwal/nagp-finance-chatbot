@@ -6,25 +6,25 @@
     "funds": [
       {
         "id": "inv001",
-        "fundId": "equity_funds",
+        "fundId": "FE.equity_funds",
         "fundName": "Aditya Birla Sun Life Liquid Fund",
         "Amount": "70000"
       },
       {
         "id": "inv002",
-        "fundId": "debt_funds",
+        "fundId": "FE.debt_funds",
         "fundName": "ICICI Prudential Bluechip Fund",
         "Amount": "60000"
       },
       {
         "id": "inv003",
-        "fundId": "hybrid_funds",
+        "fundId": "FE.hybrid_funds",
         "fundName": "HDFC Balanced Advantage Fund",
         "Amount": "50000"
       },
       {
         "id": "inv004",
-        "fundId": "index_funds",
+        "fundId": "FE.index_funds",
         "fundName": "UTI Nifty Index Fund",
         "Amount": "40000"
       }
@@ -37,19 +37,19 @@
     "funds": [
       {
         "id": "inv005",
-        "fundId": "equity_funds",
+        "fundId": "FE.equity_funds",
         "fundName": "DSP Midcap Fund",
         "Amount": "80000"
       },
       {
         "id": "inv006",
-        "fundId": "index_funds",
+        "fundId": "FE.index_funds",
         "fundName": "SBI Small Cap Fund",
         "Amount": "70000"
       },
       {
         "id": "inv007",
-        "fundId": "hybrid_funds",
+        "fundId": "FE.hybrid_funds",
         "fundName": "Kotak Equity Arbitrage Fund",
         "Amount": "60000"
       }
@@ -62,19 +62,19 @@
     "funds": [
       {
         "id": "inv008",
-        "fundId": "equity_funds",
+        "fundId": "FE.equity_funds",
         "fundName": "HDFC Top 100 Fund",
         "Amount": "90000"
       },
       {
         "id": "inv009",
-        "fundId": "debt_funds",
+        "fundId": "FE.debt_funds",
         "fundName": "Axis Small Cap Fund",
         "Amount": "80000"
       },
       {
         "id": "inv010",
-        "fundId": "index_funds",
+        "fundId": "FE.index_funds",
         "fundName": "ICICI Prudential Equity & Debt Fund",
         "Amount": "70000"
       }
@@ -87,19 +87,19 @@
     "funds": [
       {
         "id": "inv011",
-        "fundId": "equity_funds",
+        "fundId": "FE.equity_funds",
         "fundName": "SBI Bluechip Fund",
         "Amount": "95000"
       },
       {
         "id": "inv012",
-        "fundId": "debt_funds",
+        "fundId": "FE.debt_funds",
         "fundName": "IDFC Bond Fund - Income Plan",
         "Amount": "85000"
       },
       {
         "id": "inv013",
-        "fundId": "hybrid_funds",
+        "fundId": "FE.hybrid_funds",
         "fundName": "Edelweiss Arbitrage Fund",
         "Amount": "75000"
       }
@@ -112,19 +112,19 @@
     "funds": [
       {
         "id": "inv014",
-        "fundId": "index_funds",
+        "fundId": "FE.index_funds",
         "fundName": "ICICI Prudential Gilt Fund",
         "Amount": "85000"
       },
       {
         "id": "inv015",
-        "fundId": "debt_funds",
+        "fundId": "FE.debt_funds",
         "fundName": "SBI Magnum Gilt Fund",
         "Amount": "75000"
       },
       {
         "id": "inv016",
-        "fundId": "hybrid_funds",
+        "fundId": "FE.hybrid_funds",
         "fundName": "Axis Enhanced Arbitrage Fund",
         "Amount": "65000"
       }

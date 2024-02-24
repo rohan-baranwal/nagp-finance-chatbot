@@ -16,19 +16,19 @@ const mainChoiceIntent = (agent: WebhookClient) => {
             [
               {
                 "text": `1. Portfolio Valuation`,
-                "callback_data": "portfolio-valuation"
+                "callback_data": "PV.portfolio-valuation"
               }
             ],
             [
               {
                 "text": `2. Fund Explorer`,
-                "callback_data": "fund-explorer"
+                "callback_data": "FE.fund-explorer"
               }
             ],
             [
               {
                 "text": `3. Transaction History`,
-                "callback_data": "transaction-history"
+                "callback_data": "TH.transaction-history"
               }
             ]
           ]

@@ -2,26 +2,25 @@ import { Payload, Platforms, WebhookClient } from "dialogflow-fulfillment";
 import { TelegramOriginalRequest } from "../interfaces/original-request.interface";
 import fundCategories from "../db/fund-categories.json";
 import { GoBackTo } from "../enums/go-back.enum";
-import { getSession, getSessionItem, resetSession, setSessionItem } from "../services/session.service"
+import { SessionType, getSession, getSessionItem, resetSession, setSessionItem } from "../services/session.service"
 import { SessionKeys } from "../enums/session-keys.enum";
 
 const fundExplorerMain = (agent: WebhookClient): Payload => {
-  // resetSession(agent);
   const session = getSession(agent);
   let payload = {
-    "text": `Welcome to BaraFin services.\nSomething is wrong. We are working on fixing it.\nStay tuned! fei-1`,
+    "text": `Welcome to BaraFin services.\nSomething is wrong. We are working on fixing it.\nStay tuned!
+ERROR: fundExplorerMain.1
+    `,
     "parse_mode": "Markdown",
     "reply_markup": {
       "inline_keyboard": [
-        [{ "text": `🔙 Main Menu 🔙`, "callback_data": GoBackTo.MainChoice }]
+        [{ "text": `🔙 Main Menu 🔙`, "callback_data": GoBackTo.MainMenu }]
       ]
     }
   };
 
   const chooseCategoryInput = [
     "fund-explorer",
-    "funds",
-    "fund",
     "explorer",
     GoBackTo.FundExplorer
   ];
@@ -46,7 +45,10 @@ const fundExplorerMain = (agent: WebhookClient): Payload => {
     GoBackTo.ChooseFunds
   ]
 
+  const catetoryInputRegex = new RegExp(chooseCategoryInput.join("|"));
+  const subCatetoryInputRegex = new RegExp(chooseSubCategoryInput.join("|"));
   const fundInputRegex = new RegExp(chooseFundInput.join("|"));
+  const selectedFundRegex = new RegExp("selected-fund\.")
 
   // checking if user wants to go back in menu
   if (Object.values(GoBackTo).includes(agent.query as GoBackTo)) {
@@ -62,20 +64,24 @@ const fundExplorerMain = (agent: WebhookClient): Payload => {
       sessionQuery = getSessionItem(SessionKeys[targetEnum as keyof typeof SessionKeys], agent);
     }
     (agent.query as any) = sessionQuery;
-  } else {
   }
 
-  if (chooseCategoryInput.includes(agent.query)) {
-    payload = chooseFundCategory(agent);
+  // checking user is where and redirecting accordingly
+  if (catetoryInputRegex.test(agent.query)) {
+    payload = chooseFundCategory(agent, session);
     setSessionItem(SessionKeys.MainChoice, agent.query, agent);
-  } else if (chooseSubCategoryInput.includes(agent.query)) {
-    payload = chooseFundSubCategory(agent);
+  } else if (subCatetoryInputRegex.test(agent.query)) {
+    payload = chooseFundSubCategory(agent, session);
     setSessionItem(SessionKeys.FundExplorer, agent.query, agent);
   } else if (fundInputRegex.test(agent.query)) {
-    payload = chooseSubCategoryFund(agent);
+    payload = chooseSubCategoryFund(agent, session);
     setSessionItem(SessionKeys.FundSubCategory, agent.query, agent);
+  } else if (selectedFundRegex.test(agent.query)) {
+    payload = chooseSelectedFundOption(agent, session);
+    setSessionItem(SessionKeys.ChooseFunds, agent.query, agent);
   }
 
+  console.log(session);
   return new Payload(
     "TELEGRAM" as Platforms,
     payload,
@@ -86,9 +92,9 @@ const fundExplorerMain = (agent: WebhookClient): Payload => {
   )
 }
 
-const chooseFundCategory = (agent: WebhookClient): any => {
-  const categories = fundCategories.map(fc => ([{ "text": fc.name, "callback_data": fc.id }]));
-  categories.push([{ "text": `🔙 Go Back`, "callback_data": GoBackTo.MainChoice }])
+const chooseFundCategory = (agent: WebhookClient, session?: SessionType): any => {
+  const categories = fundCategories.map(fc => ([{ "text": fc.name, "callback_data": `${fc.id}` }]));
+  categories.push([{ "text": `🔙 Go Back`, "callback_data": GoBackTo.MainMenu }])
   return {
     "text": "These are the fund categories.\nWhich one you would like to see?",
     "parse_mode": "Markdown",
@@ -98,10 +104,10 @@ const chooseFundCategory = (agent: WebhookClient): any => {
   }
 }
 
-const chooseFundSubCategory = (agent: WebhookClient): any => {
+const chooseFundSubCategory = (agent: WebhookClient, session?: SessionType): any => {
   const category = fundCategories.find(fc => fc.id === agent.query);
-  const subCategories = category?.children.map(fch => ([{ "text": fch.name, "callback_data": `${category.id}.${fch.id}` }]));
-  subCategories?.push([{ "text": `🔙 Go Back`, "callback_data": GoBackTo.FundExplorer }]);
+  const subCategories = category?.children.map(fch => ([{ "text": fch.name, "callback_data": `${fch.id}` }]));
+  subCategories?.push([{ "text": `🔙 Go Back`, "callback_data": GoBackTo.MainChoice }]);
 
   if (!subCategories?.length) {
     return {
@@ -118,19 +124,19 @@ const chooseFundSubCategory = (agent: WebhookClient): any => {
   }
 }
 
-const chooseSubCategoryFund = (agent: WebhookClient): any => {
-  const fundCategoryId = agent.query.split(".")[0];
-  const fundSubCategoryId = agent.query.split(".")[1];
+const chooseSubCategoryFund = (agent: WebhookClient, session?: SessionType): any => {
+  const fundCategoryId = session?.sessionStack[session.sessionStack.length - 1] ?? 'FE.debt-funds';
+  const fundSubCategoryId = agent.query;//.split(".")[1];
 
   const fundSubCategory = fundCategories
     .find(fc => fc.id === fundCategoryId)?.children
-    .find(fch => fch.id === fundSubCategoryId);
+    .find(fch => fch.id === fundSubCategoryId) ?? fundCategories[1].children[2];
 
-  const allFundsInCategory = fundSubCategory?.examples.map(fch => ([{ "text": fch, "callback_data": `${fundCategoryId}.${fch.replace(/\./g, '')}` }]));
-  allFundsInCategory?.push([{ "text": `🔙 Go Back`, "callback_data": GoBackTo.ChooseFunds }]);
+  const allFundsInCategory = fundSubCategory?.examples.map(fch => ([{ "text": fch, "callback_data": `FE.selected-fund.${fch.replace(/\./g, '')}` }]));
+  allFundsInCategory?.push([{ "text": `🔙 Go Back`, "callback_data": GoBackTo.FundExplorer }]);
 
   return {
-    "text": `Which ${fundSubCategory?.name} you would like to checout?`,
+    "text": `Which ${fundSubCategory?.name} you would like to checkout?`,
     "parse_mode": "Markdown",
     "reply_markup": {
       "inline_keyboard": allFundsInCategory
@@ -138,14 +144,36 @@ const chooseSubCategoryFund = (agent: WebhookClient): any => {
   }
 }
 
+const chooseSelectedFundOption = (agent: WebhookClient, session?: SessionType): any => {
+  const selectedFund = agent.query.split(".").pop();
+  return {
+    "text": `
+    *${selectedFund}:*\n
+This is a dynamic asset allocation fund, investing in both equity (30-80%) and debt (20-70%) based on market outlook. It aims for balanced returns across market conditions while managing risk. Think of it as a flexible basket adapting to market swings, offering moderate growth potential with some stability.\n
+More details: [https://www.youtube.com/watch?v=dQw4w9WgXcQ](${selectedFund})
+    `,
+    "parse_mode": "Markdown",
+    "reply_markup": {
+      "inline_keyboard": [
+        [
+          {
+            "text": `Invest in ${selectedFund}`,
+            "callback_data": `FE.invest-in.${selectedFund}`
+          }
+        ],
+        [{ "text": `🔙 Go Back`, "callback_data": GoBackTo.FundSubCategory }],
+        [{ "text": `🔙 Main Menu 🔙`, "callback_data": GoBackTo.MainMenu }]
+      ]
+    }
+  };
+}
+
 const fundExplorerInent = (agent: WebhookClient): void => {
   if ((agent.originalRequest as TelegramOriginalRequest).source === "telegram") {
-
-
     const telegramResponse: Payload = fundExplorerMain(agent);
     agent.add(telegramResponse);
   } else {
-    agent.add(`Welcome to BaraFin services.\nSomething is wrong. We are working on fixing it.\nStay tuned! fei-2`);
+    agent.add(`Welcome to BaraFin services.\nSomething is wrong. We are working on fixing it.\nStay tuned!\nERROR: fundExplorerMain.2`);
   }
 }
 

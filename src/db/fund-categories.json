@@ -1,11 +1,11 @@
 [
   {
-    "id": "equity-funds",
+    "id": "FE.equity-funds",
     "name": "Equity Funds",
     "description": "Equity funds primarily invest in stocks or equity securities.",
     "children": [
       {
-        "id": "large-cap",
+        "id": "FE.large-cap",
         "name": "Large-cap Funds",
         "description": "Large-cap funds invest primarily in companies with large market capitalization.",
         "children": [],
@@ -16,7 +16,7 @@
         ]
       },
       {
-        "id": "mid-cap",
+        "id": "FE.mid-cap",
         "name": "Mid-cap Funds",
         "description": "Mid-cap funds invest in companies with medium-sized market capitalization.",
         "children": [],
@@ -27,7 +27,7 @@
         ]
       },
       {
-        "id": "small-cap",
+        "id": "FE.small-cap",
         "name": "Small-cap Funds",
         "description": "Small-cap funds invest in companies with small market capitalization.",
         "children": [],
@@ -41,12 +41,12 @@
     "examples": []
   },
   {
-    "id": "debt-funds",
+    "id": "FE.debt-funds",
     "name": "Debt Funds",
     "description": "Debt funds primarily invest in fixed-income securities such as bonds and treasury bills.",
     "children": [
       {
-        "id": "liquid-funds",
+        "id": "FE.liquid-funds",
         "name": "Liquid Funds",
         "description": "Liquid funds invest in very short-term market instruments with high liquidity.",
         "children": [],
@@ -57,7 +57,7 @@
         ]
       },
       {
-        "id": "income-funds",
+        "id": "FE.income-funds",
         "name": "Income Funds",
         "description": "Income funds invest in fixed-income securities with an objective to generate regular income.",
         "children": [],
@@ -68,7 +68,7 @@
         ]
       },
       {
-        "id": "gilt-funds",
+        "id": "FE.gilt-funds",
         "name": "Gilt Funds",
         "description": "Gilt funds primarily invest in government securities.",
         "children": [],
@@ -82,12 +82,12 @@
     "examples": []
   },
   {
-    "id": "hybrid-funds",
+    "id": "FE.hybrid-funds",
     "name": "Hybrid Funds",
     "description": "Hybrid funds invest in a mix of equities and debt instruments.",
     "children": [
       {
-        "id": "balanced-funds",
+        "id": "FE.balanced-funds",
         "name": "Balanced Funds",
         "description": "Balanced funds maintain a balanced portfolio of stocks and bonds.",
         "children": [],
@@ -98,7 +98,7 @@
         ]
       },
       {
-        "id": "arbitrage-funds",
+        "id": "FE.arbitrage-funds",
         "name": "Arbitrage Funds",
         "description": "Arbitrage funds exploit price differentials in different markets to generate returns.",
         "children": [],
@@ -112,14 +112,22 @@
     "examples": []
   },
   {
-    "id": "index-funds",
+    "id": "FE.index-funds",
     "name": "Index Funds",
     "description": "Index funds replicate the performance of a specific market index.",
-    "children": [],
-    "examples": [
-      "ICICI Prudential Nifty Index Fund",
-      "UTI Nifty Index Fund",
-      "Aditya Birla Sun Life Index Fund"
-    ]
+    "children": [
+      {
+        "id": "FE.balanced-funds",
+        "name": "Balanced Funds",
+        "description": "Balanced funds maintain a balanced portfolio of stocks and bonds.",
+        "children": [],
+        "examples": [
+          "ICICI Prudential Nifty Index Fund",
+          "UTI Nifty Index Fund",
+          "Aditya Birla Sun Life Index Fund"
+        ]
+      }
+    ],
+    "examples": []
   }
 ]
