@@ -1,9 +1,9 @@
 import { Payload, Platforms, WebhookClient } from "dialogflow-fulfillment";
-import { getSession } from "../services/session.service";
+import { getSession, getSessionItem } from "../services/session.service";
 import { GoBackTo } from "../enums/go-back.enum";
 import { TelegramOriginalRequest } from "../interfaces/original-request.interface";
-import { Events } from "../enums/events.enum";
-import fundExplorerInent from "./fund-explorer.intent";
+import { SessionKeys } from "../enums/session-keys.enum";
+import { Contexts } from "../enums/contexts.enum";
 
 const fallbackMain = (agent: WebhookClient): Payload => {
   const session = getSession(agent);
@@ -20,8 +20,26 @@ ERROR: fallbackMain.1
   };
 
   // setting last action to repeat
-  const lastAction = session["sessionStack"].pop();
+  const lastAction = getSessionItem(SessionKeys.LastAction, agent);
   (agent.query as any) = lastAction;
+
+  if (lastAction?.length) {
+    // agent.clearOutgoingContexts();
+    const intentKey = lastAction.split(".")[0];
+    switch (intentKey) {
+      case "FE":
+        agent.setContext(Contexts.FundExplorer);
+        break;
+      case "PV":
+      case "TH":
+      case "PHN":
+        agent.setContext(Contexts.PhoneNumber);
+        break;
+      default:
+        agent.setContext(Contexts.FundExplorer);
+        break;
+    }
+  }
 
   return new Payload(
     "TELEGRAM" as Platforms,
@@ -33,53 +51,10 @@ ERROR: fallbackMain.1
   );
 }
 
-const getFollowupEvent = (agent: WebhookClient): string | null => {
-  const session = getSession(agent);
-  const lastAction = session["sessionStack"].pop();
-
-  if (lastAction?.length) {
-    const intentKey = lastAction.split(".")[0];
-    switch (intentKey) {
-      case "FE":
-        return Events.FundExplorer;
-      case "PV":
-      case "TH":
-      case "PHN":
-      default:
-        return null;
-    }
-  }
-  return null
-}
-
-const followupEvent = (agent: WebhookClient): void => {
-  const session = getSession(agent);
-  const lastAction = session["sessionStack"].pop();
-  if (lastAction?.length) {
-    const intentKey = lastAction.split(".")[0];
-    switch (intentKey) {
-      case "FE":
-        fundExplorerInent(agent);
-        break;
-      case "PV":
-      case "TH":
-      case "PHN":
-      default:
-        break;
-    }
-  }
-}
-
 const defaultFallbackIntent = (agent: WebhookClient): void => {
   if ((agent.originalRequest as TelegramOriginalRequest).source === "telegram") {
     const telegramResponse: Payload = fallbackMain(agent);
-
-    const followupEventValue: string | null = getFollowupEvent(agent);
     agent.add(telegramResponse);
-    if (followupEventValue) {
-      // agent.setFollowupEvent(followupEvent);
-      followupEvent(agent);
-    }
   } else {
     agent.add(`Welcome to BaraFin services.\nI didn't get that.\nSomething is wrong. We are working on fixing it.\nStay tuned!\nERROR: fundExplorerMain.2`);
   }

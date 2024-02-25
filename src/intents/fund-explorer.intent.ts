@@ -4,6 +4,7 @@ import fundCategories from "../db/fund-categories.json";
 import { GoBackTo } from "../enums/go-back.enum";
 import { SessionType, getSession, getSessionItem, resetSession, setSessionItem } from "../services/session.service"
 import { SessionKeys } from "../enums/session-keys.enum";
+import { Contexts } from "../enums/contexts.enum";
 
 const fundExplorerMain = (agent: WebhookClient): Payload => {
   const session = getSession(agent);
@@ -43,12 +44,13 @@ ERROR: fundExplorerMain.1
     "balanced-funds",
     "arbitrage-funds",
     GoBackTo.ChooseFunds
-  ]
+  ];
 
   const catetoryInputRegex = new RegExp(chooseCategoryInput.join("|"));
   const subCatetoryInputRegex = new RegExp(chooseSubCategoryInput.join("|"));
   const fundInputRegex = new RegExp(chooseFundInput.join("|"));
-  const selectedFundRegex = new RegExp("selected-fund\.")
+  const selectedFundRegex = new RegExp("selected-fund\.");
+  const investMoreRegex = new RegExp("\.invest-in\.");
 
   // checking if user wants to go back in menu
   if (Object.values(GoBackTo).includes(agent.query as GoBackTo)) {
@@ -69,19 +71,23 @@ ERROR: fundExplorerMain.1
   // checking user is where and redirecting accordingly
   if (catetoryInputRegex.test(agent.query)) {
     payload = chooseFundCategory(agent, session);
-    setSessionItem(SessionKeys.MainChoice, agent.query, agent);
+    setSessionItem(SessionKeys.MainChoice, agent.query, agent, true);
   } else if (subCatetoryInputRegex.test(agent.query)) {
     payload = chooseFundSubCategory(agent, session);
-    setSessionItem(SessionKeys.FundExplorer, agent.query, agent);
+    setSessionItem(SessionKeys.FundExplorer, agent.query, agent, true);
   } else if (fundInputRegex.test(agent.query)) {
     payload = chooseSubCategoryFund(agent, session);
-    setSessionItem(SessionKeys.FundSubCategory, agent.query, agent);
+    setSessionItem(SessionKeys.FundSubCategory, agent.query, agent, true);
   } else if (selectedFundRegex.test(agent.query)) {
     payload = chooseSelectedFundOption(agent, session);
-    setSessionItem(SessionKeys.ChooseFunds, agent.query, agent);
+    setSessionItem(SessionKeys.ChooseFunds, agent.query, agent, true);
+  } else if (investMoreRegex.test(agent.query)) {
+    agent.clearContext(Contexts.FundExplorer);
+    agent.setContext(Contexts.PhoneNumber);
+    payload = chooseInvestInFund(agent, session);
+    setSessionItem(SessionKeys.InvestMore, agent.query, agent, true);
   }
 
-  console.log(session);
   return new Payload(
     "TELEGRAM" as Platforms,
     payload,
@@ -166,6 +172,13 @@ More details: [https://www.youtube.com/watch?v=dQw4w9WgXcQ](${selectedFund})
       ]
     }
   };
+}
+
+const chooseInvestInFund = (agent: WebhookClient, session?: SessionType): any => {
+  return {
+    "text": "Enter registered phone number",
+    "parse_mode": "Markdown"
+  }
 }
 
 const fundExplorerInent = (agent: WebhookClient): void => {

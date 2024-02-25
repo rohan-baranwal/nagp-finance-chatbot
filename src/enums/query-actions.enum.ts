@@ -4,5 +4,7 @@ export enum QueryActions {
   FundExplorer = `fund-explorer`,
   FundSubCategory = `fund-sub-category`,
   ChooseFunds = `choose-funds`,
+  InvestMore = `invest in`,
   PhoneNumber = `phone-number`,
+  LastAction = `last-action`,
 }

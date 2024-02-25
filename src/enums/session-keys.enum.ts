@@ -7,4 +7,6 @@ export enum SessionKeys {
   FundSubCategory = `${session}${QueryActions.FundSubCategory}`,
   ChooseFunds = `${session}${QueryActions.ChooseFunds}`,
   PhoneNumber = `${session}${QueryActions.PhoneNumber}`,
+  InvestMore = `${session}${QueryActions.InvestMore}`,
+  LastAction = `${session}${QueryActions.LastAction}`,
 }

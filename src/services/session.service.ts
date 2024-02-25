@@ -1,4 +1,5 @@
 import { WebhookClient } from "dialogflow-fulfillment";
+import { SessionKeys } from "../enums/session-keys.enum";
 
 type SessionType = {
   id: string,
@@ -21,10 +22,14 @@ const getSession = (agent: WebhookClient): SessionType => {
   return currentSession;
 };
 
-const setSessionItem = (key: string, value: string, agent: WebhookClient): void => {
+const setSessionItem = (key: string, value: string, agent: WebhookClient, setLastAction: boolean = false): void => {
   const currentSession = getSession(agent);
   currentSession[key] = value;
   currentSession["sessionStack"].push(value);
+  if (setLastAction) {
+    currentSession[SessionKeys.LastAction] = value;
+  }
+  console.log(currentSession);
 }
 
 const getSessionItem = (key: string, agent: WebhookClient): string => {
