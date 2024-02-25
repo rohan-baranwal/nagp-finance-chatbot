@@ -5,6 +5,7 @@ import { GoBackTo } from "../enums/go-back.enum";
 import { SessionKeys } from "../enums/session-keys.enum";
 import { Contexts } from "../enums/contexts.enum";
 import userData from "../db/user-funds.json";
+import { getPastRandomDate } from "../services/utils";
 
 const transationHistoryMain = (agent: WebhookClient): Payload => {
   const session = getSession(agent);
@@ -22,16 +23,15 @@ ERROR: transactionHistoryIntent.1
 
   const transactionHistoryRegex = new RegExp("transaction-history");
 
-  
   if (transactionHistoryRegex.test(agent.query)) {
     setSessionItem(SessionKeys.MainChoice, agent.query, agent, true);
     payload = choosetransactionHistory(agent);
-    agent.clearOutgoingContexts();
-    if (!session[SessionKeys.PhoneNumber]?.length) {
-      agent.setContext(Contexts.PhoneNumber);
-    } else {
+    // agent.clearOutgoingContexts();
+    agent.setContext(Contexts.PhoneNumber);
+    // if (!session[SessionKeys.PhoneNumber]?.length) {
+    // } else {
 
-    }
+    // }
   }
 
 
@@ -59,22 +59,16 @@ const choosetransactionHistory = (agent: WebhookClient): any => {
 }
 const chooseShowHistory = (agent: WebhookClient, session?: SessionType): any => {
   const user = userData[1];
-  const totalAmount = user.funds.reduce((acc, fund) => {
-    return acc + parseInt(fund.Amount);
-  }, 0);
-  const currentDate = new Date();
-
-  const formattedDate = currentDate.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric'
-  });
+  const transactions: string[] = [];
+  user.funds.forEach((fund, index) => {
+    const txn = `${index + 1}. *Rs. ${fund.Amount}* added on ${getPastRandomDate()}\n`;
+    transactions.push(txn);
+  })
   return {
     "text": `
 Hi ${user.userName}.
-Your ${agent.query.includes("1") ? "Portfolio - Long Term" : "Portfolio - Year End"} has total value of
-*Rs. ${totalAmount}*
-on ${formattedDate}
+Your transactions:
+${transactions.map(t => t)}
 
 
 Thankyou for using our services. Say "hi" to start again.

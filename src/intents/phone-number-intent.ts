@@ -3,6 +3,8 @@ import { Contexts } from "../enums/contexts.enum";
 import { getSession, getSessionItem, setSessionItem } from "../services/session.service";
 import { SessionKeys } from "../enums/session-keys.enum";
 import { GoBackTo } from "../enums/go-back.enum";
+import userData from "../db/user-funds.json";
+import { getPastRandomDate } from "../services/utils";
 
 const phoneNumberInent = (agent: WebhookClient): void => {
   const context = agent.getContext(Contexts.PhoneNumber);
@@ -30,11 +32,13 @@ const phoneNumberInent = (agent: WebhookClient): void => {
             {
               "text": `Which portfolio would you like to see?`,
               "parse_mode": "Markdown",
-              "inline_keyboard": [
-                [{ "text": `Portfolio - Long Term`, "callback_data": `PV.show-portfolio-1` }],
-                [{ "text": `Portfolio - Year End`, "callback_data": `PV.show-portfolio-2` }],
-                [{ "text": `🔙 Main Menu 🔙`, "callback_data": GoBackTo.MainMenu }]
-              ]
+              "reply_markup": {
+                "inline_keyboard": [
+                  [{ "text": `Portfolio - Long Term`, "callback_data": `PV.show-portfolio-1` }],
+                  [{ "text": `Portfolio - Year End`, "callback_data": `PV.show-portfolio-2` }],
+                  [{ "text": `🔙 Main Menu 🔙`, "callback_data": GoBackTo.MainMenu }]
+                ]
+              }
             },
             {
               rawPayload: false,
@@ -43,18 +47,31 @@ const phoneNumberInent = (agent: WebhookClient): void => {
           ));
           // agent.add();
         } else if (/TH\.transaction-history/.test(lastAction)) {
+          const user = userData[1];
+          const transactions: string[] = [];
+          user.funds.forEach((fund, index) => {
+            const txn = `${index + 1}. *Rs. ${fund.Amount}* added on ${getPastRandomDate()}\n`;
+            transactions.push(txn);
+          });
           (agent.query as any) = "PV.show-history";
           agent.setContext(Contexts.TransactionHistory);
           agent.add(new Payload(
             "TELEGRAM" as Platforms,
             {
-              "text": `Getting your History...`,
+              "text": `
+Hi ${user.userName}.
+Your transactions:
+${transactions.map(t => t)}
+
+
+Thankyou for using our services. Say "hi" to start again.
+    `,
               "parse_mode": "Markdown",
-              "inline_keyboard": [
-                [{ "text": `Portfolio - Long Term`, "callback_data": `PV.show-portfolio-1` }],
-                [{ "text": `Portfolio - Year End`, "callback_data": `PV.show-portfolio-2` }],
-                [{ "text": `🔙 Main Menu 🔙`, "callback_data": GoBackTo.MainMenu }]
-              ]
+              "reply_markup": {
+                "inline_keyboard": [
+                  [{ "text": `🔙 Main Menu 🔙`, "callback_data": GoBackTo.MainMenu }]
+                ]
+              }
             },
             {
               rawPayload: false,
@@ -62,7 +79,7 @@ const phoneNumberInent = (agent: WebhookClient): void => {
             }
           ));
           // agent.add();
-        }else {
+        } else {
           const intentKey = lastAction.split(".")[0];
           switch (intentKey) {
             case "FE":
