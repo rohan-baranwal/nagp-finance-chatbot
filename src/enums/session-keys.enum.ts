@@ -9,4 +9,5 @@ export enum SessionKeys {
   PhoneNumber = `${session}${QueryActions.PhoneNumber}`,
   InvestMore = `${session}${QueryActions.InvestMore}`,
   LastAction = `${session}${QueryActions.LastAction}`,
+  ShowPortfolio = `${session}${QueryActions.ShowPortfolio}`,
 }

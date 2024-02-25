@@ -7,4 +7,5 @@ export enum QueryActions {
   InvestMore = `invest in`,
   PhoneNumber = `phone-number`,
   LastAction = `last-action`,
+  ShowPortfolio = `show-portfolio`
 }
